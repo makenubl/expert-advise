@@ -31,7 +31,12 @@ export default function ChatInterface() {
   const [isLoading, setIsLoading] = useState(false);
   const [isContinuingChat, setIsContinuingChat] = useState(false);
   const [hasAutoStarted, setHasAutoStarted] = useState(false);
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const handleImageError = (advisorId: string) => {
+    setImageErrors((prev) => new Set(prev).add(advisorId));
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -244,11 +249,21 @@ export default function ChatInterface() {
             {advisors.map((advisor) => (
               <div key={advisor.id} className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
                 <div className="relative">
-                  <img
-                    src={advisor.imageUrl}
-                    alt={advisor.name}
-                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover ring-2 ring-white shadow-md"
-                  />
+                  {imageErrors.has(advisor.id) ? (
+                    <div
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full ring-2 ring-white shadow-md flex items-center justify-center text-white font-bold text-sm sm:text-base"
+                      style={{ backgroundColor: advisor.color }}
+                    >
+                      {advisor.avatar}
+                    </div>
+                  ) : (
+                    <img
+                      src={advisor.imageUrl}
+                      alt={advisor.name}
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover ring-2 ring-white shadow-md"
+                      onError={() => handleImageError(advisor.id)}
+                    />
+                  )}
                   <div className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full border-2 border-white"></div>
                 </div>
                 <div className="hidden sm:block">
@@ -315,11 +330,21 @@ export default function ChatInterface() {
                 {/* Avatar */}
                 {message.role === "advisor" && advisor ? (
                   <div className="flex-shrink-0 mt-1">
-                    <img
-                      src={advisor.imageUrl}
-                      alt={advisor.name}
-                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover ring-2 ring-white shadow-md"
-                    />
+                    {imageErrors.has(advisor.id) ? (
+                      <div
+                        className="w-8 h-8 sm:w-10 sm:h-10 rounded-full ring-2 ring-white shadow-md flex items-center justify-center text-white font-bold text-xs sm:text-sm"
+                        style={{ backgroundColor: advisor.color }}
+                      >
+                        {advisor.avatar}
+                      </div>
+                    ) : (
+                      <img
+                        src={advisor.imageUrl}
+                        alt={advisor.name}
+                        className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover ring-2 ring-white shadow-md"
+                        onError={() => handleImageError(advisor.id)}
+                      />
+                    )}
                   </div>
                 ) : (
                   <div className="flex-shrink-0 mt-1">
