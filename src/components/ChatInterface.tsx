@@ -235,23 +235,23 @@ export default function ChatInterface() {
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       {/* Header */}
-      <div className="bg-white shadow-sm px-6 py-4 border-b border-gray-200">
+      <div className="bg-white shadow-sm px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-2xl font-bold text-gray-900 mb-3">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">
             🧠 Advisory Board
           </h1>
-          <div className="flex gap-6">
+          <div className="flex gap-3 sm:gap-6 overflow-x-auto pb-2 sm:pb-0">
             {advisors.map((advisor) => (
-              <div key={advisor.id} className="flex items-center gap-3">
+              <div key={advisor.id} className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
                 <div className="relative">
                   <img
                     src={advisor.imageUrl}
                     alt={advisor.name}
-                    className="w-12 h-12 rounded-full object-cover ring-2 ring-white shadow-md"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover ring-2 ring-white shadow-md"
                   />
-                  <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full border-2 border-white"></div>
                 </div>
-                <div>
+                <div className="hidden sm:block">
                   <div className="font-semibold text-gray-900 text-sm">
                     {advisor.name}
                   </div>
@@ -264,15 +264,15 @@ export default function ChatInterface() {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-6">
-        <div className="max-w-4xl mx-auto space-y-6">
+      <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 sm:py-6">
+        <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
           {messages.length === 0 && (
-            <div className="text-center py-16">
-              <div className="text-6xl mb-4">💬</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <div className="text-center py-12 sm:py-16">
+              <div className="text-5xl sm:text-6xl mb-3 sm:mb-4">💬</div>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
                 Starting conversation...
               </h2>
-              <p className="text-gray-600 max-w-lg mx-auto text-lg">
+              <p className="text-gray-600 max-w-lg mx-auto text-base sm:text-lg px-4">
                 Your advisory board is picking a topic to discuss.
               </p>
               <div className="mt-6 flex gap-1.5 justify-center">
@@ -296,10 +296,10 @@ export default function ChatInterface() {
             // Show topic as a centered banner
             if (isFirstMessage && message.role === "user") {
               return (
-                <div key={message.id} className="text-center mb-8">
-                  <div className="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full shadow-lg">
-                    <div className="text-sm font-semibold">📢 Discussion Topic</div>
-                    <div className="text-lg font-bold mt-1">{message.content}</div>
+                <div key={message.id} className="text-center mb-6 sm:mb-8">
+                  <div className="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-lg max-w-[90%]">
+                    <div className="text-xs sm:text-sm font-semibold">📢 Discussion Topic</div>
+                    <div className="text-base sm:text-lg font-bold mt-1">{message.content}</div>
                   </div>
                 </div>
               );
@@ -308,7 +308,7 @@ export default function ChatInterface() {
             return (
               <div
                 key={message.id}
-                className={`flex gap-3 items-start ${
+                className={`flex gap-2 sm:gap-3 items-start ${
                   message.role === "user" ? "flex-row-reverse" : ""
                 }`}
               >
@@ -318,12 +318,12 @@ export default function ChatInterface() {
                     <img
                       src={advisor.imageUrl}
                       alt={advisor.name}
-                      className="w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-md"
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover ring-2 ring-white shadow-md"
                     />
                   </div>
                 ) : (
                   <div className="flex-shrink-0 mt-1">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-sm shadow-md">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-xs sm:text-sm shadow-md">
                       You
                     </div>
                   </div>
@@ -333,8 +333,7 @@ export default function ChatInterface() {
                 <div
                   className={`flex flex-col ${
                     message.role === "user" ? "items-end" : "items-start"
-                  }`}
-                  style={{ maxWidth: "65%" }}
+                  } max-w-[80%] sm:max-w-[70%]`}
                 >
                   {message.role === "advisor" && advisor && (
                     <div className="flex items-center gap-2 mb-1 px-1">
@@ -348,14 +347,14 @@ export default function ChatInterface() {
                   )}
 
                   <div
-                    className={`rounded-2xl px-4 py-3 shadow-sm ${
+                    className={`rounded-2xl px-3 sm:px-4 py-2 sm:py-3 shadow-sm ${
                       message.role === "user"
                         ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-tr-sm"
                         : "bg-white text-gray-900 rounded-tl-sm border border-gray-200"
                     }`}
                   >
                     <div
-                      className={`text-[15px] leading-relaxed whitespace-pre-wrap ${
+                      className={`text-sm sm:text-[15px] leading-relaxed whitespace-pre-wrap ${
                         message.role === "user" ? "text-white" : "text-gray-800"
                       }`}
                     >
@@ -404,9 +403,9 @@ export default function ChatInterface() {
       </div>
 
       {/* Input Area */}
-      <div className="bg-white border-t border-gray-200 px-4 py-4 shadow-lg">
+      <div className="bg-white border-t border-gray-200 px-3 sm:px-4 py-3 sm:py-4 shadow-lg">
         <div className="max-w-4xl mx-auto">
-          <form onSubmit={handleSubmit} className="flex gap-3 items-end">
+          <form onSubmit={handleSubmit} className="flex gap-2 sm:gap-3 items-end">
             <div className="flex-1 relative">
               <textarea
                 value={inputValue}
@@ -421,26 +420,26 @@ export default function ChatInterface() {
                     handleSubmit(e);
                   }
                 }}
-                placeholder="Jump in anytime with your question..."
-                className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none max-h-32 text-[15px]"
+                placeholder="Jump in with your question..."
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none max-h-32 text-sm sm:text-[15px]"
                 disabled={isLoading}
                 rows={1}
-                style={{ minHeight: "48px" }}
+                style={{ minHeight: "44px" }}
               />
             </div>
             <button
               type="submit"
               disabled={isLoading || !inputValue.trim()}
-              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl font-medium hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg disabled:shadow-none h-[48px] flex items-center gap-2"
+              className="px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl font-medium hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg disabled:shadow-none min-h-[44px] flex items-center gap-2"
             >
               {isLoading ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Sending...</span>
+                  <span className="hidden sm:inline">Sending...</span>
                 </>
               ) : (
                 <>
-                  <span>Send</span>
+                  <span className="hidden sm:inline">Send</span>
                   <svg
                     className="w-4 h-4"
                     fill="none"
@@ -458,7 +457,7 @@ export default function ChatInterface() {
               )}
             </button>
           </form>
-          <p className="text-xs text-gray-400 text-center mt-2">
+          <p className="text-xs text-gray-400 text-center mt-2 px-2 hidden sm:block">
             The advisors will discuss the topic. You can jump in anytime! (Enter
             to send, Shift+Enter for new line)
           </p>

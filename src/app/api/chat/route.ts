@@ -32,12 +32,17 @@ export async function POST(request: NextRequest) {
 
           // Build conversation history for context
           // Keep all user messages AND this advisor's messages
-          const chatHistory = conversationHistory
+          let chatHistory = conversationHistory
             ?.filter((msg: any) => !msg.advisorId || msg.advisorId === advisor.id)
             .map((msg: any) => ({
               role: msg.role === "user" ? "user" : "model",
               parts: [{ text: msg.content }],
             })) || [];
+
+          // Ensure history starts with user message or is empty
+          if (chatHistory.length > 0 && chatHistory[0].role !== "user") {
+            chatHistory = [];
+          }
 
           const chat = model.startChat({
             history: chatHistory,
